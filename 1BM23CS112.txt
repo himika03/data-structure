@@ -1,13 +1,63 @@
-void moveZeroes(int* nums, int numsSize) {
-    int i=0;
-    for(int j=0; j< numsSize ; j++){
-        if(nums[j]!=0){
-            if(j>i){
-                nums[i]=nums[j];
-                nums[j]=0;
-            }
-            i++;
+#include<stdio.h>
+#include<conio.h>
+#define SIZE 10
+void push(int);
+void pop();
+void display();
+int stack[SIZE],top=-1;\
+
+void main(){
+    int value,choice;
+    int clrscr();
+    while(1){
+        printf("\n\tStack Operations\n");
+        printf("\t1. Push\n");
+        printf("\t2. Pop\n");
+        printf("\t3. Display\n");
+        printf("\t4. Exit\n");
+        printf("\tEnter your choice: ");
+        scanf("%d",&choice);
+        switch(choice){
+            case 1: printf("\n enter the value to be inserted: ");
+                    scanf("%d",&value);
+                    push(value);
+                    break;
+            case 2: pop();
+                    break;
+            case 3: display();
+                    break;
+            case 4: exit(0);
+                    break;        
+            default: printf("\n invalid input");
         }
+
     }
-    
 }
+void push(int value){
+    if(top==SIZE-1)
+      printf("\n Stack Overflow");
+    else{
+        top++;
+        stack[top]=value;
+        printf("\n %d pushed into the stack",value);
+    }  
+}
+ void pop(){
+    if(top==-1)
+        printf("\n Stack Underflow");
+    else{
+        printf("\n %d popped from the stack",stack[top]);
+        top--;
+    }
+}
+ void display(){
+    int i;
+    if(top==-1)
+        printf("\n Stack is empty");
+    else{
+        printf("\n Stack elements are: ");
+        for(i=top;i>=0;i--)
+            printf("%d ",stack[i]);
+    }
+}
+
