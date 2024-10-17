@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <ctype.h>
+
+#define MAX 100
+
+char stack[MAX];
+int top = -1;
+
+void push(char ele) {
+    if (top < MAX - 1) {
+        stack[++top] = ele;
+    } else {
+        printf("Stack overflow\n");
+    }
+}
+
+char pop() {
+    if (top != -1) {
+        return stack[top--];
+    } else {
+        printf("Stack underflow\n");
+        return '\0';
+    }
+}
+
+int pr(char op) {
+    switch (op) {
+        case '#': return 0;
+        case '(': return 1;
+        case '+':
+        case '-': return 2;
+        case '*':
+        case '/': return 3;
+        default: return 0;
+    }
+}
+
+int main() {
+    char infix[MAX], postfix[MAX];
+    int i = 0, j = 0;
+    char ch;
+
+    printf("Enter your infix expression: ");
+    scanf("%s", infix);
+    push('#');
+
+    while (infix[i] != '\0') {
+        if (isalpha(infix[i])) {
+            postfix[j++] = infix[i];
+        } else if (infix[i] == '(') {
+            push(infix[i]);
+        } else if (infix[i] == ')') {
+            while (stack[top] != '(' && top != -1) {
+                ch = pop();
+                postfix[j++] = ch;
+            }
+            if (top != -1) {
+                pop();
+            }
+        } else {
+            while (stack[top] != '#' && pr(infix[i]) <= pr(stack[top])) {
+                ch = pop();
+                postfix[j++] = ch;
+            }
+            push(infix[i]);
+        }
+        i++;
+    }
+
+    while (top != -1) {
+        ch = pop();
+        if (ch != '#') {
+            postfix[j++] = ch;
+        }
+    }
+    postfix[j] = '\0';
+
+    printf("Postfix expression: %s\n", postfix);
+   
+    return 0;
+}
